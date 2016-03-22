@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.eclipse.jgit.transport.PushResult
+
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
@@ -57,7 +59,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.1.0
  * @see <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>
  */
-class PushOp implements Callable<Void> {
+class PushOp implements Callable<Iterable<PushResult>> {
 	private final Repository repo
 
 	/**
@@ -101,7 +103,7 @@ class PushOp implements Callable<Void> {
 		this.repo = repo
 	}
 
-	Void call() {
+	Iterable<PushResult> call() {
 		PushCommand cmd = repo.jgit.push()
 		TransportOpUtil.configure(cmd, repo.credentials)
 		cmd.remote = remote
@@ -111,8 +113,7 @@ class PushOp implements Callable<Void> {
 		cmd.force = force
 		cmd.dryRun = dryRun
 		try {
-			cmd.call()
-			return null
+			return cmd.call()
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem pushing to remote.', e)
 		}

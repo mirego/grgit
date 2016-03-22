@@ -6,6 +6,7 @@ plugins {
 	id 'org.sonarqube' version '1.2'
 }
 
+version = '1.5.1-mirego-1'
 group = 'org.ajoberstar'
 description = 'The Groovy way to use Git.'
 
@@ -23,6 +24,7 @@ defaults {
 }
 
 sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 
 repositories {
 	mavenCentral()
